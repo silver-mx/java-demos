@@ -1,8 +1,9 @@
 package dns.streams;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 public class Streams {
 
@@ -38,6 +39,36 @@ public class Streams {
         return numbers.stream()
                 .mapToInt(Integer::intValue)
                 .sum();
+    }
+
+    public static Set<String> getKidNameShouldReturnNamesOfAllKidsUnder18(List<Person> people) {
+        return people.stream()
+                .filter(person -> person.age() < 18)
+                .map(Person::name)
+                .collect(Collectors.toSet());
+    }
+
+    public static Map<Boolean, List<Person>> partitionAdults(List<Person> people) {
+        return people.stream()
+                .collect(partitioningBy(person -> person.age() >= 18));
+    }
+
+
+    public static Map<String, List<Person>> groupByNationality(List<Person> people) {
+        return people.stream()
+                .collect(groupingBy(Person::nationality));
+    }
+
+    public static String joinNamesSeparatedByString(List<Person> people) {
+        return people.stream()
+                .map(Person::name)
+                .collect(joining(",", "Names: ", "."));
+    }
+
+    public static String getEvenOrOdd(List<Integer> list) {
+        return list.stream()
+                .map(number -> number % 2 == 0 ? "e" + number : "o" + number)
+                .collect(joining(","));
     }
 
 }
